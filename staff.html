@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-gray-900 text-white h-screen p-4 fixed">
+            <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
+            <ul>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center"><i class="fas fa-users mr-2"></i> Staff Records</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center"><i class="fas fa-money-check-alt mr-2"></i> Payroll</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center"><i class="fas fa-hand-holding-usd mr-2"></i> Loans</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center"><i class="fas fa-chart-line mr-2"></i> Reports</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center"><i class="fas fa-cog mr-2"></i> Settings</li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="ml-64 w-full p-6">
+            <header class="bg-white p-4 shadow flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-bell text-gray-600 text-lg cursor-pointer"></i>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                </div>
+            </header>
+            
+            <!-- Dashboard Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                <div class="bg-white p-6 rounded-lg shadow flex items-center">
+                    <i class="fas fa-users text-4xl text-blue-500 mr-4"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold">Total Staff</h3>
+                        <p class="text-xl">120</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow flex items-center">
+                    <i class="fas fa-money-bill-wave text-4xl text-green-500 mr-4"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold">Total Payroll</h3>
+                        <p class="text-xl">UGX 50M</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow flex items-center">
+                    <i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mr-4"></i>
+                    <div>
+                        <h3 class="text-lg font-semibold">Total Loans</h3>
+                        <p class="text-xl">UGX 20M</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Staff Records Table -->
+            <div class="bg-white mt-6 p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-4">Staff Records</h3>
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-3">ID</th>
+                            <th class="p-3">Name</th>
+                            <th class="p-3">Position</th>
+                            <th class="p-3">Salary</th>
+                            <th class="p-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b">
+                            <td class="p-3">001</td>
+                            <td class="p-3">John Doe</td>
+                            <td class="p-3">Manager</td>
+                            <td class="p-3">UGX 2M</td>
+                            <td class="p-3"><i class="fas fa-edit text-blue-500 cursor-pointer"></i> <i class="fas fa-trash text-red-500 cursor-pointer"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+           
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const salaryCtx = document.getElementById('salaryChart').getContext('2d');
+        new Chart(salaryCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Managers', 'Developers', 'Support Staff'],
+                datasets: [{
+                    data: [40, 35, 25],
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
+                }]
+            }
+        });
+        
+        const loanCtx = document.getElementById('loanChart').getContext('2d');
+        new Chart(loanCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+                datasets: [{
+                    label: 'Loan Amount (UGX)',
+                    data: [5, 8, 12, 7, 10],
+                    backgroundColor: '#f59e0b'
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

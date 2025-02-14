@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-gray-900 text-white h-screen p-4 fixed">
+            <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
+            <ul id="menu">
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="staff"><i class="fas fa-users mr-2"></i> Staff Records</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="payroll"><i class="fas fa-money-check-alt mr-2"></i> Payroll</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="loans"><i class="fas fa-hand-holding-usd mr-2"></i> Loans</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="reports"><i class="fas fa-chart-line mr-2"></i> Reports</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="settings"><i class="fas fa-cog mr-2"></i> Settings</li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="ml-64 w-full p-6">
+            <header class="bg-white p-4 shadow-lg flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-gray-800">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-bell text-gray-600 text-lg cursor-pointer"></i>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                </div>
+            </header>
+            
+            <div id="dashboard" class="content-section mt-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- Total Staff Card -->
+                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 p-6 rounded-xl shadow-lg flex items-center text-white">
+                        <i class="fas fa-users text-4xl mr-4"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold">Total Staff</h3>
+                            <p class="text-2xl">120</p>
+                        </div>
+                    </div>
+
+                    <!-- Total Payroll Card -->
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 p-6 rounded-xl shadow-lg flex items-center text-white">
+                        <i class="fas fa-money-bill-wave text-4xl mr-4"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold">Total Payroll</h3>
+                            <p class="text-2xl">UGX 50M</p>
+                        </div>
+                    </div>
+
+                    <!-- Total Loans Card -->
+                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-6 rounded-xl shadow-lg flex items-center text-white">
+                        <i class="fas fa-hand-holding-usd text-4xl mr-4"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold">Total Loans</h3>
+                            <p class="text-2xl">UGX 20M</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Performance Section -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Performance Overview -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Performance Overview</h3>
+                        <div class="flex justify-between items-center">
+                            <div class="text-center">
+                                <h4 class="text-lg font-medium text-gray-600">Active Staff</h4>
+                                <p class="text-3xl font-bold text-blue-600">85%</p>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="text-lg font-medium text-gray-600">Completed Projects</h4>
+                                <p class="text-3xl font-bold text-green-600">75%</p>
+                            </div>
+                            <div class="text-center">
+                                <h4 class="text-lg font-medium text-gray-600">Loan Repayment</h4>
+                                <p class="text-3xl font-bold text-yellow-600">40%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Tasks -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Upcoming Tasks</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-calendar-check text-green-500 mr-3"></i>
+                                <span>Finalize staff payroll review</span>
+                            </li>
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-calendar-check text-blue-500 mr-3"></i>
+                                <span>Submit loan repayment reports</span>
+                            </li>
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-calendar-check text-yellow-500 mr-3"></i>
+                                <span>Prepare monthly performance report</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Records Section -->
+            <div id="staff" class="content-section mt-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-semibold text-gray-800">Staff Records</h3>
+                    <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded">Add Staff</button>
+                </div>
+                <input type="text" id="search" class="p-2 border rounded w-full mb-6" placeholder="Search Staff...">
+                <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+                    <thead>
+                        <tr class="bg-gray-800 text-white">
+                            <th class="p-4">Full Name</th>
+                            <th class="p-4">Phone</th>
+                            <th class="p-4">Email</th>
+                            <th class="p-4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffTable">
+                        <tr>
+                            <td class="p-4">John Doe</td>
+                            <td class="p-4">+256123456789</td>
+                            <td class="p-4">johndoe@email.com</td>
+                            <td class="p-4">
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded">View</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-4">Jane Smith</td>
+                            <td class="p-4">+256987654321</td>
+                            <td class="p-4">janesmith@email.com</td>
+                            <td class="p-4">
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Staff Modal with Scrollable Content -->
+    <div id="staffModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl max-h-[80vh] overflow-y-auto">
+            <h2 class="text-xl font-semibold mb-4">Add/Edit Staff</h2>
+            <form id="staffForm">
+                <h3 class="text-lg font-semibold">Personal Information</h3>
+                <input type="text" placeholder="Full Name" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Phone Number" class="p-2 border rounded w-full mb-2">
+                <input type="email" placeholder="Email Address" class="p-2 border rounded w-full mb-2">
+                <input type="date" placeholder="Date of Birth" class="p-2 border rounded w-full mb-2">
+                <select class="p-2 border rounded w-full mb-2">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+                <input type="text" placeholder="Nationality" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Emergency Contact Name" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Emergency Contact Phone" class="p-2 border rounded w-full mb-2">
+
+                <h3 class="text-lg font-semibold mt-4">Employment Information</h3>
+                <input type="text" placeholder="Job Title" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Department" class="p-2 border rounded w-full mb-2">
+                <input type="date" placeholder="Start Date" class="p-2 border rounded w-full mb-2">
+                <select class="p-2 border rounded w-full mb-2">
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Contract</option>
+                </select>
+                <input type="text" placeholder="Salary & Benefits" class="p-2 border rounded w-full mb-2">
+
+                <h3 class="text-lg font-semibold mt-4">Education & Qualifications</h3>
+                <input type="text" placeholder="Educational Background" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Professional Skills & Training" class="p-2 border rounded w-full mb-2">
+
+                <div class="flex justify-end sticky bottom-0 bg-white p-4">
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuItems = document.querySelectorAll("#menu li");
+            const sections = document.querySelectorAll(".content-section");
+            
+            // Handle menu item clicks to show/hide sections
+            menuItems.forEach((item) => {
+                item.addEventListener("click", function () {
+                    // Hide all sections
+                    sections.forEach((section) => section.classList.add("hidden"));
+            
+                    // Get the section to show
+                    const sectionId = this.getAttribute("data-section");
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        section.classList.remove("hidden");
+                    }
+                });
+            });
+
+            // Handle modal operations for adding staff
+            const modal = document.getElementById("staffModal");
+            const staffForm = document.getElementById("staffForm");
+
+            function openModal() {
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            }
+
+            function closeModal() {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+            }
+
+            // Simulate adding staff to table
+            staffForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const staffName = staffForm.querySelector('input[type="text"]').value;
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `<td>${staffName}</td><td><button class="bg-blue-500 text-white px-4 py-2 rounded">View</button></td>`;
+                document.getElementById("staffTable").querySelector('tbody').appendChild(newRow);
+                closeModal();
+            });
+        });
+    </script>
+</body>
+</html>

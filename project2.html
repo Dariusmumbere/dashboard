@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-gray-900 text-white h-screen p-4 fixed">
+            <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
+            <ul id="menu">
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="staff"><i class="fas fa-users mr-2"></i> Staff Records</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="payroll"><i class="fas fa-money-check-alt mr-2"></i> Payroll</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="loans"><i class="fas fa-hand-holding-usd mr-2"></i> Loans</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="reports"><i class="fas fa-chart-line mr-2"></i> Reports</li>
+                <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="settings"><i class="fas fa-cog mr-2"></i> Settings</li>
+            </ul>
+        </aside>
+        
+        <!-- Main Content -->
+        <div class="ml-64 w-full p-6">
+            <header class="bg-white p-4 shadow flex justify-between items-center">
+                <h2 class="text-xl font-semibold">Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <i class="fas fa-bell text-gray-600 text-lg cursor-pointer"></i>
+                    <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                </div>
+            </header>
+            
+            <div id="dashboard" class="content-section">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                    <div class="bg-white p-6 rounded-lg shadow flex items-center">
+                        <i class="fas fa-users text-4xl text-blue-500 mr-4"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold">Total Staff</h3>
+                            <p class="text-xl">120</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow flex items-center">
+                        <i class="fas fa-money-bill-wave text-4xl text-green-500 mr-4"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold">Total Payroll</h3>
+                            <p class="text-xl">UGX 50M</p>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow flex items-center">
+                        <i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mr-4"></i>
+                        <div>
+                            <h3 class="text-lg font-semibold">Total Loans</h3>
+                            <p class="text-xl">UGX 20M</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- Staff Records Section -->
+            <div id="staff" class="content-section hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Staff Records</h2>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="openModal()">Add Staff</button>
+                </div>
+                <input type="text" id="search" placeholder="Search staff..." class="p-2 border rounded w-full mb-4">
+                <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+                    <table class="min-w-full w-full border-collapse">
+                        <thead class="bg-gray-800 text-white text-left">
+                            <tr>
+                                <th class="p-4">Full Name</th>
+                                <th class="p-4">Job Title</th>
+                                <th class="p-4">Department</th>
+                                <th class="p-4">Employment Status</th>
+                                <th class="p-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffTable" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+    <!-- Staff Modal with Scrollable Content -->
+<div id="staffModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl max-h-[80vh] overflow-y-auto">
+        <h2 class="text-xl font-semibold mb-4">Add/Edit Staff</h2>
+        <form id="staffForm">
+            <h3 class="text-lg font-semibold">Personal Information</h3>
+            <input type="text" placeholder="Full Name" class="p-2 border rounded w-full mb-2">
+            <input type="text" placeholder="Phone Number" class="p-2 border rounded w-full mb-2">
+            <input type="email" placeholder="Email Address" class="p-2 border rounded w-full mb-2">
+            <input type="date" placeholder="Date of Birth" class="p-2 border rounded w-full mb-2">
+            <select class="p-2 border rounded w-full mb-2">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+            <input type="text" placeholder="Nationality" class="p-2 border rounded w-full mb-2">
+            <input type="text" placeholder="Emergency Contact Name" class="p-2 border rounded w-full mb-2">
+            <input type="text" placeholder="Emergency Contact Phone" class="p-2 border rounded w-full mb-2">
+
+            <h3 class="text-lg font-semibold mt-4">Employment Information</h3>
+            <input type="text" placeholder="Job Title" class="p-2 border rounded w-full mb-2">
+            <input type="text" placeholder="Department" class="p-2 border rounded w-full mb-2">
+            <input type="date" placeholder="Start Date" class="p-2 border rounded w-full mb-2">
+            <select class="p-2 border rounded w-full mb-2">
+                <option>Full-time</option>
+                <option>Part-time</option>
+                <option>Contract</option>
+            </select>
+            <input type="text" placeholder="Salary & Benefits" class="p-2 border rounded w-full mb-2">
+
+            <h3 class="text-lg font-semibold mt-4">Education & Qualifications</h3>
+            <input type="text" placeholder="Educational Background" class="p-2 border rounded w-full mb-2">
+            <input type="text" placeholder="Professional Skills & Training" class="p-2 border rounded w-full mb-2">
+
+            <div class="flex justify-end sticky bottom-0 bg-white p-4">
+                <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <!-- More Info Modal -->
+<div id="staffInfoModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl">
+        <h2 class="text-xl font-semibold mb-4">Staff Details</h2>
+        <div id="staffDetails" class="space-y-3">
+            <!-- Staff details will be inserted dynamically here -->
+        </div>
+        <div class="flex justify-end">
+            <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeInfoModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+    <script>
+       document.addEventListener("DOMContentLoaded", function () {
+    const menuItems = document.querySelectorAll("#menu li");
+    const sections = document.querySelectorAll(".content-section");
+    
+    // Handle menu item clicks to show/hide sections
+    menuItems.forEach((item) => {
+        item.addEventListener("click", function () {
+            // Hide all sections
+            sections.forEach((section) => section.classList.add("hidden"));
+    
+            // Get the section to show
+            const sectionId = this.getAttribute("data-section");
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.remove("hidden");
+            }
+        });
+    });
+
+    // Handle modal operations for adding staff
+    const modal = document.getElementById("staffModal");
+    const infoModal = document.getElementById("staffInfoModal");
+    const staffForm = document.getElementById("staffForm");
+    const staffTable = document.getElementById("staffTable");
+    const searchInput = document.getElementById("search");
+    const staffDetails = document.getElementById("staffDetails");
+
+    function openModal() {
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+    }
+
+    function closeModal() {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+    }
+
+    // Fix for closing the Info Modal
+    function closeInfoModal() {
+        infoModal.classList.add('hidden');
+        infoModal.classList.remove('flex');
+    }
+
+    document.querySelector("button[onclick='openModal()']").addEventListener("click", openModal);
+    document.querySelector("button[onclick='closeModal()']").addEventListener("click", closeModal);
+    
+    // Fix: Add event listener for closing the Info Modal
+    const closeInfoButton = document.querySelector("button[onclick='closeInfoModal()']");
+    if (closeInfoButton) {
+        closeInfoButton.addEventListener("click", closeInfoModal);
+    }
+
+    staffForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        const inputs = staffForm.querySelectorAll("input, select");
+        const staffData = {};
+        inputs.forEach(input => staffData[input.placeholder || "gender"] = input.value);
+
+        if (!staffData["Full Name"] || !staffData["Job Title"] || !staffData["Department"]) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        const newRow = document.createElement("tr");
+        newRow.classList.add("hover:bg-gray-100", "transition");
+
+        newRow.innerHTML = `
+            <td class="p-4 border-b">${staffData["Full Name"]}</td>
+            <td class="p-4 border-b">${staffData["Job Title"]}</td>
+            <td class="p-4 border-b">${staffData["Department"]}</td>
+            <td class="p-4 border-b">${staffData["Full-time"]}</td>
+            <td class="p-4 border-b flex space-x-2">
+                <button class="text-blue-500 hover:text-blue-700 edit-btn">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="text-yellow-500 hover:text-yellow-700 info-btn">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+                <button class="text-red-500 hover:text-red-700 delete-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        `;
+
+        staffTable.appendChild(newRow);
+        staffForm.reset();
+        closeModal();
+
+        newRow.querySelector(".delete-btn").addEventListener("click", function () {
+            newRow.remove();
+        });
+
+        newRow.querySelector(".edit-btn").addEventListener("click", function () {
+            openModal();
+            inputs.forEach(input => input.value = staffData[input.placeholder || "gender"]);
+            newRow.remove();
+        });
+
+        newRow.querySelector(".info-btn").addEventListener("click", function () {
+            infoModal.classList.remove("hidden");
+            infoModal.classList.add("flex");
+            staffDetails.innerHTML = `
+                <p><strong>Full Name:</strong> ${staffData["Full Name"]}</p>
+                <p><strong>Phone Number:</strong> ${staffData["Phone Number"]}</p>
+                <p><strong>Email:</strong> ${staffData["Email Address"]}</p>
+                <p><strong>Job Title:</strong> ${staffData["Job Title"]}</p>
+                <p><strong>Department:</strong> ${staffData["Department"]}</p>
+                <p><strong>Salary & Benefits:</strong> ${staffData["Salary & Benefits"]}</p>
+            `;
+        });
+    });
+
+    searchInput.addEventListener("input", function () {
+        const searchText = searchInput.value.toLowerCase();
+        staffTable.querySelectorAll("tr").forEach(row => {
+            row.style.display = row.innerText.toLowerCase().includes(searchText) ? "" : "none";
+        });
+    });
+});
+
+    </script>
+</body>
+</html>

@@ -6,12 +6,13 @@
     <title>Staff Management System</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100">
     <div class="flex">
         <!-- Sidebar Navigation -->
         <aside class="w-64 bg-gray-900 text-white h-screen p-4 fixed">
-            <h2 class="text-2xl font-bold mb-6">Admin Panel</h2>
+            <h2 class="text-2xl font-bold mb-6">Kinyamaseke Archdeaconry Dashboard</h2>
             <ul id="menu">
                 <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="dashboard"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</li>
                 <li class="p-3 hover:bg-gray-700 rounded flex items-center cursor-pointer" data-section="staff"><i class="fas fa-users mr-2"></i> Staff Records</li>
@@ -32,237 +33,556 @@
                 </div>
             </header>
             
+            <!-- Dashboard Section -->
             <div id="dashboard" class="content-section">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                    <div class="bg-white p-6 rounded-lg shadow flex items-center">
-                        <i class="fas fa-users text-4xl text-blue-500 mr-4"></i>
-                        <div>
-                            <h3 class="text-lg font-semibold">Total Staff</h3>
-                            <p class="text-xl">120</p>
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold">Dashboard Overview</h2>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-blue-500 text-white px-4 py-2 rounded flex items-center">
+                            <i class="fas fa-download mr-2"></i> Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Key Metrics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <!-- Total Staff Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg flex items-center hover:shadow-xl transition-shadow">
+                        <div class="bg-blue-100 p-4 rounded-full">
+                            <i class="fas fa-users text-4xl text-blue-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Total Staff</h3>
+                            <p class="text-2xl font-bold">120</p>
+                            <p class="text-sm text-gray-500">+5% from last month</p>
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow flex items-center">
-                        <i class="fas fa-money-bill-wave text-4xl text-green-500 mr-4"></i>
-                        <div>
-                            <h3 class="text-lg font-semibold">Total Payroll</h3>
-                            <p class="text-xl">UGX 50M</p>
+
+                    <!-- Total Payroll Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg flex items-center hover:shadow-xl transition-shadow">
+                        <div class="bg-green-100 p-4 rounded-full">
+                            <i class="fas fa-money-bill-wave text-4xl text-green-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Total Payroll</h3>
+                            <p class="text-2xl font-bold">UGX 50M</p>
+                            <p class="text-sm text-gray-500">+10% from last month</p>
                         </div>
                     </div>
-                    <div class="bg-white p-6 rounded-lg shadow flex items-center">
-                        <i class="fas fa-hand-holding-usd text-4xl text-yellow-500 mr-4"></i>
-                        <div>
-                            <h3 class="text-lg font-semibold">Total Loans</h3>
-                            <p class="text-xl">UGX 20M</p>
+
+                    <!-- Total Loans Card -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg flex items-center hover:shadow-xl transition-shadow">
+                        <div class="bg-yellow-100 p-4 rounded-full">
+                            <i class="fas fa-hand-holding-usd text-4xl text-yellow-500"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-700">Total Loans</h3>
+                            <p class="text-2xl font-bold">UGX 20M</p>
+                            <p class="text-sm text-gray-500">+3% from last month</p>
                         </div>
                     </div>
                 </div>
-                
+
+                <!-- Charts Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Payroll Distribution Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4">Payroll Distribution</h3>
+                        <canvas id="payrollChart"></canvas>
+                    </div>
+
+                    <!-- Staff Department Distribution Chart -->
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h3 class="text-lg font-semibold mb-4">Staff by Department</h3>
+                        <canvas id="departmentChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="mt-8">
+                    <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <ul class="space-y-4">
+                            <li class="flex items-center space-x-4">
+                                <div class="bg-blue-100 p-3 rounded-full">
+                                    <i class="fas fa-user-plus text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-700">New staff member added: <strong>John Doe</strong></p>
+                                    <p class="text-sm text-gray-500">2 hours ago</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center space-x-4">
+                                <div class="bg-green-100 p-3 rounded-full">
+                                    <i class="fas fa-money-check-alt text-green-500"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-700">Payroll processed for <strong>Finance Department</strong></p>
+                                    <p class="text-sm text-gray-500">5 hours ago</p>
+                                </div>
+                            </li>
+                            <li class="flex items-center space-x-4">
+                                <div class="bg-yellow-100 p-3 rounded-full">
+                                    <i class="fas fa-hand-holding-usd text-yellow-500"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-700">Loan approved for <strong>Jane Smith</strong></p>
+                                    <p class="text-sm text-gray-500">1 day ago</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             
             <!-- Staff Records Section -->
             <div id="staff" class="content-section hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-semibold">Staff Records</h2>
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="openModal()">Add Staff</button>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="openStaffModal()">Add Staff</button>
                 </div>
                 <input type="text" id="search" placeholder="Search staff..." class="p-2 border rounded w-full mb-4">
                 <div class="overflow-x-auto bg-white rounded-lg shadow-md">
                     <table class="min-w-full w-full border-collapse">
                         <thead class="bg-gray-800 text-white text-left">
                             <tr>
+                                <th class="p-4">Staff ID</th>
                                 <th class="p-4">Full Name</th>
                                 <th class="p-4">Job Title</th>
                                 <th class="p-4">Department</th>
-                                <th class="p-4">Employment Status</th>
                                 <th class="p-4">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="staffTable" class="divide-y divide-gray-200"></tbody>
                     </table>
                 </div>
-                
+            </div>
+
+            <!-- Payroll Section -->
+            <div id="payroll" class="content-section hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold">Payroll</h2>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded" onclick="openPayrollModal()">Add Payroll</button>
+                </div>
+                <input type="text" id="payrollSearch" placeholder="Search payroll..." class="p-2 border rounded w-full mb-4">
+                <div class="overflow-x-auto bg-white rounded-lg shadow-md">
+                    <table class="min-w-full w-full border-collapse">
+                        <thead class="bg-gray-800 text-white text-left">
+                            <tr>
+                                <th class="p-4">Staff ID</th>
+                                <th class="p-4">Full Name</th>
+                                <th class="p-4">Department</th>
+                                <th class="p-4">Salary</th>
+                                <th class="p-4">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="payrollTable" class="divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    
-    <!-- Staff Modal with Scrollable Content -->
-<div id="staffModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-    <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl max-h-[80vh] overflow-y-auto">
-        <h2 class="text-xl font-semibold mb-4">Add/Edit Staff</h2>
-        <form id="staffForm">
-            <h3 class="text-lg font-semibold">Personal Information</h3>
-            <input type="text" placeholder="Full Name" class="p-2 border rounded w-full mb-2">
-            <input type="text" placeholder="Phone Number" class="p-2 border rounded w-full mb-2">
-            <input type="email" placeholder="Email Address" class="p-2 border rounded w-full mb-2">
-            <input type="date" placeholder="Date of Birth" class="p-2 border rounded w-full mb-2">
-            <select class="p-2 border rounded w-full mb-2">
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-            </select>
-            <input type="text" placeholder="Nationality" class="p-2 border rounded w-full mb-2">
-            <input type="text" placeholder="Emergency Contact Name" class="p-2 border rounded w-full mb-2">
-            <input type="text" placeholder="Emergency Contact Phone" class="p-2 border rounded w-full mb-2">
 
-            <h3 class="text-lg font-semibold mt-4">Employment Information</h3>
-            <input type="text" placeholder="Job Title" class="p-2 border rounded w-full mb-2">
-            <input type="text" placeholder="Department" class="p-2 border rounded w-full mb-2">
-            <input type="date" placeholder="Start Date" class="p-2 border rounded w-full mb-2">
-            <select class="p-2 border rounded w-full mb-2">
-                <option>Full-time</option>
-                <option>Part-time</option>
-                <option>Contract</option>
-            </select>
-            <input type="text" placeholder="Salary & Benefits" class="p-2 border rounded w-full mb-2">
+    <!-- Staff Modal -->
+    <div id="staffModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl max-h-[80vh] overflow-y-auto">
+            <h2 class="text-xl font-semibold mb-4">Add/Edit Staff</h2>
+            <form id="staffForm">
+                <!-- Personal Information -->
+                <h3 class="text-lg font-semibold">Personal Information</h3>
+                <input type="text" placeholder="Full Name" class="p-2 border rounded w-full mb-2" required>
+                <input type="text" placeholder="Phone Number" class="p-2 border rounded w-full mb-2">
+                <input type="email" placeholder="Email Address" class="p-2 border rounded w-full mb-2">
+                <input type="date" placeholder="Date of Birth" id="dateOfBirth" class="p-2 border rounded w-full mb-2" required>
+                <select class="p-2 border rounded w-full mb-2">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+                <input type="text" placeholder="Nationality" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Emergency Contact Name" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Emergency Contact Phone" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Home Address" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="National ID Number" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Staff ID Number" class="p-2 border rounded w-full mb-2" required>
+                <input type="text" placeholder="Name of Spouse" class="p-2 border rounded w-full mb-2">
+                <input type="text" placeholder="Children (comma-separated)" class="p-2 border rounded w-full mb-2">
 
-            <h3 class="text-lg font-semibold mt-4">Education & Qualifications</h3>
-            <input type="text" placeholder="Educational Background" class="p-2 border rounded w-full mb-2">
-            <input type="text" placeholder="Professional Skills & Training" class="p-2 border rounded w-full mb-2">
+                <!-- Employment Information -->
+                <h3 class="text-lg font-semibold mt-4">Employment Information</h3>
+                <input type="text" placeholder="Job Title" class="p-2 border rounded w-full mb-2" required>
+                <input type="text" placeholder="Department" class="p-2 border rounded w-full mb-2" required>
+                <input type="date" placeholder="Start Date" class="p-2 border rounded w-full mb-2">
+                <select class="p-2 border rounded w-full mb-2">
+                    <option>Full-time</option>
+                    <option>Part-time</option>
+                    <option>Contract</option>
+                </select>
+                <input type="text" placeholder="Salary & Benefits" class="p-2 border rounded w-full mb-2">
 
-            <div class="flex justify-end sticky bottom-0 bg-white p-4">
-                <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeModal()">Cancel</button>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
-            </div>
-        </form>
+                <!-- Education Background -->
+                <h3 class="text-lg font-semibold mt-4">Education Background</h3>
+                <div id="educationFields">
+                    <div class="education-entry mb-4">
+                        <input type="text" placeholder="Year" class="p-2 border rounded w-full mb-2">
+                        <input type="text" placeholder="Course" class="p-2 border rounded w-full mb-2">
+                        <input type="text" placeholder="Institution" class="p-2 border rounded w-full mb-2">
+                        <input type="text" placeholder="Ward" class="p-2 border rounded w-full mb-2">
+                    </div>
+                </div>
+                <button type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded mb-4" onclick="addEducationField()">Add Another Education Entry</button>
+
+                <!-- Date of Retirement -->
+                <h3 class="text-lg font-semibold mt-4">Date of Retirement</h3>
+                <input type="date" id="dateOfRetirement" class="p-2 border rounded w-full mb-2" readonly>
+
+                <div class="flex justify-end sticky bottom-0 bg-white p-4">
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeStaffModal()">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
+    <!-- Payroll Modal -->
+    <div id="payrollModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl max-h-[80vh] overflow-y-auto">
+            <h2 class="text-xl font-semibold mb-4">Add/Edit Payroll</h2>
+            <form id="payrollForm">
+                <!-- Staff Information -->
+                <h3 class="text-lg font-semibold">Staff Information</h3>
+                <input type="text" id="payrollStaffID" placeholder="Staff ID" class="p-2 border rounded w-full mb-2" readonly>
+                <input type="text" id="payrollFullName" placeholder="Full Name" class="p-2 border rounded w-full mb-2" readonly>
+                <input type="text" id="payrollDepartment" placeholder="Department" class="p-2 border rounded w-full mb-2" readonly>
+
+                <!-- Salary Information -->
+                <h3 class="text-lg font-semibold mt-4">Salary Information</h3>
+                <input type="number" id="payrollSalary" placeholder="Salary" class="p-2 border rounded w-full mb-2" required>
+
+                <div class="flex justify-end sticky bottom-0 bg-white p-4">
+                    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closePayrollModal()">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- More Info Modal -->
-<div id="staffInfoModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-    <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl">
-        <h2 class="text-xl font-semibold mb-4">Staff Details</h2>
-        <div id="staffDetails" class="space-y-3">
-            <!-- Staff details will be inserted dynamically here -->
-        </div>
-        <div class="flex justify-end">
-            <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeInfoModal()">Close</button>
+    <div id="staffInfoModal" class="hidden fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg w-2/3 max-w-3xl max-h-[80vh] overflow-y-auto">
+            <h2 class="text-xl font-semibold mb-4">Staff Details</h2>
+            <div id="staffDetails" class="space-y-3">
+                <!-- Staff details will be inserted dynamically here -->
+            </div>
+            <div class="flex justify-end">
+                <button class="bg-gray-500 text-white px-4 py-2 rounded" onclick="closeInfoModal()">Close</button>
+            </div>
         </div>
     </div>
-</div>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function () {
-    const menuItems = document.querySelectorAll("#menu li");
-    const sections = document.querySelectorAll(".content-section");
-    
-    // Handle menu item clicks to show/hide sections
-    menuItems.forEach((item) => {
-        item.addEventListener("click", function () {
-            // Hide all sections
-            sections.forEach((section) => section.classList.add("hidden"));
-    
-            // Get the section to show
-            const sectionId = this.getAttribute("data-section");
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.classList.remove("hidden");
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuItems = document.querySelectorAll("#menu li");
+            const sections = document.querySelectorAll(".content-section");
+            
+            // Handle menu item clicks to show/hide sections
+            menuItems.forEach((item) => {
+                item.addEventListener("click", function () {
+                    // Hide all sections
+                    sections.forEach((section) => section.classList.add("hidden"));
+            
+                    // Get the section to show
+                    const sectionId = this.getAttribute("data-section");
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        section.classList.remove("hidden");
+                    }
+                });
+            });
+
+            // Handle modal operations for adding staff
+            const staffModal = document.getElementById("staffModal");
+            const payrollModal = document.getElementById("payrollModal");
+            const infoModal = document.getElementById("staffInfoModal");
+            const staffForm = document.getElementById("staffForm");
+            const payrollForm = document.getElementById("payrollForm");
+            const staffTable = document.getElementById("staffTable");
+            const payrollTable = document.getElementById("payrollTable");
+            const searchInput = document.getElementById("search");
+            const payrollSearchInput = document.getElementById("payrollSearch");
+            const staffDetails = document.getElementById("staffDetails");
+
+            function openStaffModal() {
+                staffModal.classList.remove("hidden");
+                staffModal.classList.add("flex");
             }
+
+            function closeStaffModal() {
+                staffModal.classList.add("hidden");
+                staffModal.classList.remove("flex");
+            }
+
+            function openPayrollModal() {
+                payrollModal.classList.remove("hidden");
+                payrollModal.classList.add("flex");
+            }
+
+            function closePayrollModal() {
+                payrollModal.classList.add("hidden");
+                payrollModal.classList.remove("flex");
+            }
+
+            function closeInfoModal() {
+                infoModal.classList.add("hidden");
+                infoModal.classList.remove("flex");
+            }
+
+            document.querySelector("button[onclick='openStaffModal()']").addEventListener("click", openStaffModal);
+            document.querySelector("button[onclick='openPayrollModal()']").addEventListener("click", openPayrollModal);
+            document.querySelector("button[onclick='closeStaffModal()']").addEventListener("click", closeStaffModal);
+            document.querySelector("button[onclick='closePayrollModal()']").addEventListener("click", closePayrollModal);
+            
+            // Fix: Add event listener for closing the Info Modal
+            const closeInfoButton = document.querySelector("button[onclick='closeInfoModal()']");
+            if (closeInfoButton) {
+                closeInfoButton.addEventListener("click", closeInfoModal);
+            }
+
+            // Function to calculate retirement date (65 years from date of birth)
+            function calculateRetirementDate(dateOfBirth) {
+                const birthDate = new Date(dateOfBirth);
+                const retirementDate = new Date(birthDate.setFullYear(birthDate.getFullYear() + 65));
+                return retirementDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+            }
+
+            // Function to add education fields dynamically
+            function addEducationField() {
+                const educationFields = document.getElementById("educationFields");
+                const newEntry = document.createElement("div");
+                newEntry.classList.add("education-entry", "mb-4");
+                newEntry.innerHTML = `
+                    <input type="text" placeholder="Year" class="p-2 border rounded w-full mb-2">
+                    <input type="text" placeholder="Course" class="p-2 border rounded w-full mb-2">
+                    <input type="text" placeholder="Institution" class="p-2 border rounded w-full mb-2">
+                    <input type="text" placeholder="Ward" class="p-2 border rounded w-full mb-2">
+                `;
+                educationFields.appendChild(newEntry);
+            }
+
+            // Automatically calculate retirement date when date of birth changes
+            document.getElementById("dateOfBirth").addEventListener("change", function () {
+                const dateOfBirth = this.value;
+                if (dateOfBirth) {
+                    const retirementDate = calculateRetirementDate(dateOfBirth);
+                    document.getElementById("dateOfRetirement").value = retirementDate;
+                }
+            });
+
+            // Handle staff form submission
+            staffForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const inputs = staffForm.querySelectorAll("input, select");
+                const staffData = {};
+                inputs.forEach(input => staffData[input.placeholder || "gender"] = input.value);
+
+                // Handle education background
+                const educationEntries = [];
+                document.querySelectorAll(".education-entry").forEach(entry => {
+                    const year = entry.querySelector('input[placeholder="Year"]').value;
+                    const course = entry.querySelector('input[placeholder="Course"]').value;
+                    const institution = entry.querySelector('input[placeholder="Institution"]').value;
+                    const ward = entry.querySelector('input[placeholder="Ward"]').value;
+                    if (year || course || institution || ward) {
+                        educationEntries.push({ year, course, institution, ward });
+                    }
+                });
+                staffData["Education Background"] = educationEntries;
+
+                // Validate required fields
+                if (!staffData["Full Name"] || !staffData["Job Title"] || !staffData["Department"] || !staffData["Staff ID Number"]) {
+                    alert("Please fill in all required fields.");
+                    return;
+                }
+
+                // Add staff to table
+                const newRow = document.createElement("tr");
+                newRow.classList.add("hover:bg-gray-100", "transition");
+                newRow.innerHTML = `
+                    <td class="p-4 border-b">${staffData["Staff ID Number"]}</td>
+                    <td class="p-4 border-b">${staffData["Full Name"]}</td>
+                    <td class="p-4 border-b">${staffData["Job Title"]}</td>
+                    <td class="p-4 border-b">${staffData["Department"]}</td>
+                    <td class="p-4 border-b flex space-x-2">
+                        <button class="text-blue-500 hover:text-blue-700 edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-yellow-500 hover:text-yellow-700 info-btn">
+                            <i class="fas fa-info-circle"></i>
+                        </button>
+                        <button class="text-red-500 hover:text-red-700 delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                staffTable.appendChild(newRow);
+                staffForm.reset();
+                closeStaffModal();
+
+                // Add event listeners for buttons
+                newRow.querySelector(".delete-btn").addEventListener("click", function () {
+                    newRow.remove();
+                });
+
+                newRow.querySelector(".edit-btn").addEventListener("click", function () {
+                    openStaffModal();
+                    inputs.forEach(input => input.value = staffData[input.placeholder || "gender"]);
+                    newRow.remove();
+                });
+
+                newRow.querySelector(".info-btn").addEventListener("click", function () {
+                    infoModal.classList.remove("hidden");
+                    infoModal.classList.add("flex");
+                    staffDetails.innerHTML = `
+                        <p><strong>Staff ID:</strong> ${staffData["Staff ID Number"]}</p>
+                        <p><strong>Full Name:</strong> ${staffData["Full Name"]}</p>
+                        <p><strong>Phone Number:</strong> ${staffData["Phone Number"]}</p>
+                        <p><strong>Email:</strong> ${staffData["Email Address"]}</p>
+                        <p><strong>Date of Birth:</strong> ${staffData["Date of Birth"]}</p>
+                        <p><strong>Gender:</strong> ${staffData["gender"]}</p>
+                        <p><strong>Nationality:</strong> ${staffData["Nationality"]}</p>
+                        <p><strong>Emergency Contact:</strong> ${staffData["Emergency Contact Name"]} (${staffData["Emergency Contact Phone"]})</p>
+                        <p><strong>Home Address:</strong> ${staffData["Home Address"]}</p>
+                        <p><strong>National ID:</strong> ${staffData["National ID Number"]}</p>
+                        <p><strong>Spouse:</strong> ${staffData["Name of Spouse"]}</p>
+                        <p><strong>Children:</strong> ${staffData["Children (comma-separated)"]}</p>
+                        <p><strong>Job Title:</strong> ${staffData["Job Title"]}</p>
+                        <p><strong>Department:</strong> ${staffData["Department"]}</p>
+                        <p><strong>Start Date:</strong> ${staffData["Start Date"]}</p>
+                        <p><strong>Employment Status:</strong> ${staffData["Full-time"]}</p>
+                        <p><strong>Salary & Benefits:</strong> ${staffData["Salary & Benefits"]}</p>
+                        <p><strong>Date of Retirement:</strong> ${staffData["Date of Retirement"]}</p>
+                        <p><strong>Education Background:</strong> ${JSON.stringify(staffData["Education Background"])}</p>
+                    `;
+
+                    // Autofill payroll form
+                    document.getElementById("payrollStaffID").value = staffData["Staff ID Number"];
+                    document.getElementById("payrollFullName").value = staffData["Full Name"];
+                    document.getElementById("payrollDepartment").value = staffData["Department"];
+                    document.getElementById("payrollSalary").value = staffData["Salary & Benefits"] || "";
+
+                    // Show payroll section
+                    document.getElementById("payroll").classList.remove("hidden");
+                    document.getElementById("staff").classList.add("hidden");
+                });
+            });
+
+            // Handle payroll form submission
+            payrollForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const payrollData = {
+                    staffID: document.getElementById("payrollStaffID").value,
+                    fullName: document.getElementById("payrollFullName").value,
+                    department: document.getElementById("payrollDepartment").value,
+                    salary: document.getElementById("payrollSalary").value,
+                };
+
+                // Add payroll to table
+                const newRow = document.createElement("tr");
+                newRow.classList.add("hover:bg-gray-100", "transition");
+                newRow.innerHTML = `
+                    <td class="p-4 border-b">${payrollData.staffID}</td>
+                    <td class="p-4 border-b">${payrollData.fullName}</td>
+                    <td class="p-4 border-b">${payrollData.department}</td>
+                    <td class="p-4 border-b">${payrollData.salary}</td>
+                    <td class="p-4 border-b flex space-x-2">
+                        <button class="text-blue-500 hover:text-blue-700 edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-red-500 hover:text-red-700 delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                payrollTable.appendChild(newRow);
+                payrollForm.reset();
+                closePayrollModal();
+
+                // Add event listeners for buttons
+                newRow.querySelector(".delete-btn").addEventListener("click", function () {
+                    newRow.remove();
+                });
+
+                newRow.querySelector(".edit-btn").addEventListener("click", function () {
+                    openPayrollModal();
+                    document.getElementById("payrollStaffID").value = payrollData.staffID;
+                    document.getElementById("payrollFullName").value = payrollData.fullName;
+                    document.getElementById("payrollDepartment").value = payrollData.department;
+                    document.getElementById("payrollSalary").value = payrollData.salary;
+                    newRow.remove();
+                });
+            });
+
+            // Handle search functionality for staff
+            searchInput.addEventListener("input", function () {
+                const searchText = searchInput.value.toLowerCase();
+                staffTable.querySelectorAll("tr").forEach(row => {
+                    row.style.display = row.innerText.toLowerCase().includes(searchText) ? "" : "none";
+                });
+            });
+
+            // Handle search functionality for payroll
+            payrollSearchInput.addEventListener("input", function () {
+                const searchText = payrollSearchInput.value.toLowerCase();
+                payrollTable.querySelectorAll("tr").forEach(row => {
+                    row.style.display = row.innerText.toLowerCase().includes(searchText) ? "" : "none";
+                });
+            });
+
+            // Initialize Charts
+            const payrollCtx = document.getElementById('payrollChart').getContext('2d');
+            new Chart(payrollCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Payroll (UGX)',
+                        data: [5000000, 6000000, 5500000, 7000000, 6500000, 8000000],
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            const departmentCtx = document.getElementById('departmentChart').getContext('2d');
+            new Chart(departmentCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Finance', 'HR', 'IT', 'Operations'],
+                    datasets: [{
+                        label: 'Staff Count',
+                        data: [30, 20, 40, 30],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.6)',
+                            'rgba(34, 197, 94, 0.6)',
+                            'rgba(245, 158, 11, 0.6)',
+                            'rgba(99, 102, 241, 0.6)'
+                        ],
+                        borderWidth: 1
+                    }]
+                }
+            });
         });
-    });
-
-    // Handle modal operations for adding staff
-    const modal = document.getElementById("staffModal");
-    const infoModal = document.getElementById("staffInfoModal");
-    const staffForm = document.getElementById("staffForm");
-    const staffTable = document.getElementById("staffTable");
-    const searchInput = document.getElementById("search");
-    const staffDetails = document.getElementById("staffDetails");
-
-    function openModal() {
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-    }
-
-    function closeModal() {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-    }
-
-    // Fix for closing the Info Modal
-    function closeInfoModal() {
-        infoModal.classList.add('hidden');
-        infoModal.classList.remove('flex');
-    }
-
-    document.querySelector("button[onclick='openModal()']").addEventListener("click", openModal);
-    document.querySelector("button[onclick='closeModal()']").addEventListener("click", closeModal);
-    
-    // Fix: Add event listener for closing the Info Modal
-    const closeInfoButton = document.querySelector("button[onclick='closeInfoModal()']");
-    if (closeInfoButton) {
-        closeInfoButton.addEventListener("click", closeInfoModal);
-    }
-
-    staffForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-
-        const inputs = staffForm.querySelectorAll("input, select");
-        const staffData = {};
-        inputs.forEach(input => staffData[input.placeholder || "gender"] = input.value);
-
-        if (!staffData["Full Name"] || !staffData["Job Title"] || !staffData["Department"]) {
-            alert("Please fill in all required fields.");
-            return;
-        }
-
-        const newRow = document.createElement("tr");
-        newRow.classList.add("hover:bg-gray-100", "transition");
-
-        newRow.innerHTML = `
-            <td class="p-4 border-b">${staffData["Full Name"]}</td>
-            <td class="p-4 border-b">${staffData["Job Title"]}</td>
-            <td class="p-4 border-b">${staffData["Department"]}</td>
-            <td class="p-4 border-b">${staffData["Full-time"]}</td>
-            <td class="p-4 border-b flex space-x-2">
-                <button class="text-blue-500 hover:text-blue-700 edit-btn">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="text-yellow-500 hover:text-yellow-700 info-btn">
-                    <i class="fas fa-info-circle"></i>
-                </button>
-                <button class="text-red-500 hover:text-red-700 delete-btn">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
-        `;
-
-        staffTable.appendChild(newRow);
-        staffForm.reset();
-        closeModal();
-
-        newRow.querySelector(".delete-btn").addEventListener("click", function () {
-            newRow.remove();
-        });
-
-        newRow.querySelector(".edit-btn").addEventListener("click", function () {
-            openModal();
-            inputs.forEach(input => input.value = staffData[input.placeholder || "gender"]);
-            newRow.remove();
-        });
-
-        newRow.querySelector(".info-btn").addEventListener("click", function () {
-            infoModal.classList.remove("hidden");
-            infoModal.classList.add("flex");
-            staffDetails.innerHTML = `
-                <p><strong>Full Name:</strong> ${staffData["Full Name"]}</p>
-                <p><strong>Phone Number:</strong> ${staffData["Phone Number"]}</p>
-                <p><strong>Email:</strong> ${staffData["Email Address"]}</p>
-                <p><strong>Job Title:</strong> ${staffData["Job Title"]}</p>
-                <p><strong>Department:</strong> ${staffData["Department"]}</p>
-                <p><strong>Salary & Benefits:</strong> ${staffData["Salary & Benefits"]}</p>
-            `;
-        });
-    });
-
-    searchInput.addEventListener("input", function () {
-        const searchText = searchInput.value.toLowerCase();
-        staffTable.querySelectorAll("tr").forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(searchText) ? "" : "none";
-        });
-    });
-});
-
     </script>
 </body>
 </html>
